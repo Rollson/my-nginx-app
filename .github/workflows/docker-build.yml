@@ -22,12 +22,10 @@ jobs:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
 
-    - name: git
-      id: commit_sha
+    - name: short commit sha
       run: |
-        echo "commit_sha=${{ git log -1 --pretty=%h }}" >> $GITHUB_OUTPUT
-        
-    - run: $commit_sha
+        $commit_sha=git log -1 --pretty=%h
+        echo "commit_sha = $commit_sha"
 
     # - name: Build the Docker image
     #   run: |
