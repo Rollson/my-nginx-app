@@ -23,9 +23,11 @@ jobs:
         password: ${{ secrets.ACR_PASSWORD }}
 
     - name: short commit sha
-      run: |
-        $commit_sha=git log -1 --pretty=%h
-        echo "commit_sha = $commit_sha"
+      id: commit_sha
+      run: echo "sha_short=$(git log -1 --pretty=%h" >> $GITHUB_OUTPUT
+
+    - name: print commit sha
+      run: echo ${{ steps.commit_sha.outputs.sha_short }}
 
     # - name: Build the Docker image
     #   run: |
