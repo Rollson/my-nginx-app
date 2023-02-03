@@ -31,7 +31,6 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        # docker build . --file Dockerfile --tag nginx:$(date +%s)
         docker build --build-arg COMMIT_SHORT_SHA=${{ steps.commit_sha.outputs.sha_short }} . --file ./app/Dockerfile --tag nginx:${{ steps.commit_sha.outputs.sha_short }}
 
     - name: push container image
