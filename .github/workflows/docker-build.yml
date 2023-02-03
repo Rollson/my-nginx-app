@@ -22,11 +22,15 @@ jobs:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
 
-    - name: Build the Docker image
+    - name: git
       run: |
-        # docker build . --file Dockerfile --tag nginx:$(date +%s)
-        docker build --build-arg COMMIT_SHORT_SHA=${{ git log -1 --pretty=%h }} . --file Dockerfile --tag nginx:${{ git log -1 --pretty=%h }}
+        git --version
 
-    - name: push container image
-      run: |
-        docker push ${{ secrets.CONTAINER_REGISTRY_LOGIN_SERVER  }}/$nginx:${{ git log -1 --pretty=%h }}
+    # - name: Build the Docker image
+    #   run: |
+    #     # docker build . --file Dockerfile --tag nginx:$(date +%s)
+    #     docker build --build-arg COMMIT_SHORT_SHA=${{ git log -1 --pretty=%h }} . --file Dockerfile --tag nginx:${{ git log -1 --pretty=%h }}
+
+    # - name: push container image
+    #   run: |
+    #     docker push ${{ secrets.CONTAINER_REGISTRY_LOGIN_SERVER  }}/$nginx:${{ git log -1 --pretty=%h }}
