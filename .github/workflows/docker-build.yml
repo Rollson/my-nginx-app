@@ -35,4 +35,4 @@ jobs:
 
     - name: push container image
       run: |
-        docker push ${{ secrets.CONTAINER_REGISTRY_LOGIN_SERVER  }}/$nginx:${{ steps.commit_sha.outputs.sha_short }}
+        docker push ${{ secrets.CONTAINER_REGISTRY_LOGIN_SERVER  }}/nginx:${{ steps.commit_sha.outputs.sha_short }}
