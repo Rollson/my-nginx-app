@@ -7,4 +7,6 @@ COPY app/index.html /usr/share/nginx/html
 
 RUN echo "Nginx app ${COMMIT_SHORT_SHA}" > /usr/share/nginx/index.html
 
+RUN chmod +r /usr/share/nginx/index.html
+
 EXPOSE 8080
