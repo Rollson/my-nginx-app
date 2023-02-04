@@ -31,7 +31,8 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        docker build --build-arg COMMIT_SHORT_SHA=${{ steps.commit_sha.outputs.sha_short }} . --file ./app/Dockerfile --tag ${{ secrets.CONTAINER_REGISTRY_LOGIN_SERVER  }}/nginx:${{ steps.commit_sha.outputs.sha_short }}
+        # docker build --build-arg COMMIT_SHORT_SHA=${{ steps.commit_sha.outputs.sha_short }} . --file ./app/Dockerfile --tag ${{ secrets.CONTAINER_REGISTRY_LOGIN_SERVER  }}/nginx:${{ steps.commit_sha.outputs.sha_short }}
+        docker build . --file ./app/Dockerfile --tag ${{ secrets.CONTAINER_REGISTRY_LOGIN_SERVER  }}/nginx:${{ steps.commit_sha.outputs.sha_short }}
 
     - name: push container image
       run: |
