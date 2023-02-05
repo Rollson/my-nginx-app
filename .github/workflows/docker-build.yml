@@ -9,10 +9,10 @@ on:
 
 jobs:
 
-  build:
-
+  build-image:
     runs-on: ubuntu-latest
-
+    outputs:
+      commit_sha_short: ${{ steps.commit_sha.outputs.sha_short }}
     steps:
     - uses: actions/checkout@v3
 
@@ -36,3 +36,24 @@ jobs:
     - name: push container image
       run: |
         docker push ${{ secrets.CONTAINER_REGISTRY_LOGIN_SERVER  }}/nginx:${{ steps.commit_sha.outputs.sha_short }}
+
+  update-k8s-manifest:
+    runs-on: ubuntu-latest
+    needs: build-image
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: Rollson/nginx-k8s-manifest
+          ref: main
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: setup git config 
+        run: |
+          git config --global user.email "rollsonipo@gmail.com"
+          git config --global user.name "Rollson"
+          echo ${{ needs.build-image.outputs.commit_sha_short }}
+          sed -i "s#${{ github.actor }}.*#${{ github.actor }}/nginx-k8s-manifest:${{ needs.build-image.outputs.commit_sha_short }}#g" deployment.yaml
+          git add -A
+          git commit -am "Update image for - ${{ needs.build-image.outputs.commit_sha_short }}"
+      - run: echo ${{ github }}
+      - run: git push origin master
