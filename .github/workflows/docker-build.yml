@@ -48,7 +48,7 @@ jobs:
         with:
           repository: Rollson/nginx-k8s-manifest
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
 
       - name: setup git config 
         run: |
@@ -56,9 +56,9 @@ jobs:
           git config --global user.name "Rollson"
           echo ${{ needs.build-image.outputs.commit_sha_short }}
           sed -i "s#${{ env.ACR }}.*#${{ env.ACR }}.azurecr.io/nginx:${{ needs.build-image.outputs.commit_sha_short }}#g" dev/deployment.yaml
-          # git add -A
-          git remote add github ${{ env.infraRepo }}
+          git add -A
           git commit -am "Update image for - ${{ needs.build-image.outputs.commit_sha_short }}"
           git push origin main
       - run: echo ${{ github }}
       # - run: git push origin main
+      # git remote add github ${{ env.infraRepo }}

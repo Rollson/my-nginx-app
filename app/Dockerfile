@@ -1,4 +1,4 @@
-# We should not be using latest testds
+# We should not be using latest testd
 FROM nginx:latest
 ARG COMMIT_SHORT_SHA
 COPY app/index.html /usr/share/nginx/html
