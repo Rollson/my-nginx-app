@@ -8,6 +8,7 @@ on:
     
 env: 
   ACR: "acrgitops"
+  infraRepo: "Rollson/nginx-k8s-manifest"
 
 jobs:
 
@@ -55,7 +56,8 @@ jobs:
           git config --global user.name "Rollson"
           echo ${{ needs.build-image.outputs.commit_sha_short }}
           sed -i "s#${{ env.ACR }}.*#${{ env.ACR }}.azurecr.io/nginx:${{ needs.build-image.outputs.commit_sha_short }}#g" dev/deployment.yaml
-          git add -A
+          # git add -A
+          git remote add github ${{ env.infraRepo }}
           git commit -am "Update image for - ${{ needs.build-image.outputs.commit_sha_short }}"
           git push origin main
       - run: echo ${{ github }}
