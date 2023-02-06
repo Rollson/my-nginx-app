@@ -45,7 +45,7 @@ jobs:
         with:
           repository: Rollson/nginx-k8s-manifest
           ref: main
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: setup git config 
         run: |
