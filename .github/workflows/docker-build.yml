@@ -6,10 +6,6 @@ on:
     paths:
       - "app/**"
     
-env: 
-  ACR: "acrgitops"
-  infraRepo: "Rollson/nginx-k8s-manifest"
-
 jobs:
 
   build-image:
@@ -46,19 +42,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: Rollson/nginx-k8s-manifest
+          repository: ${{ secrets.MANIFEST_REPO }}
           ref: main
           token: ${{ secrets.PAT_TOKEN }}
 
-      - name: setup git config 
+      - name: update and push changes 
         run: |
-          git config --global user.email "rollsonipo@gmail.com"
-          git config --global user.name "Rollson"
+          git config --global user.email ${{ secrets.MANIFEST_REPO }}
+          git config --global user.name ${{ secrets.REPO_USERNAME }} 
           echo ${{ needs.build-image.outputs.commit_sha_short }}
-          sed -i "s#${{ env.ACR }}.*#${{ env.ACR }}.azurecr.io/nginx:${{ needs.build-image.outputs.commit_sha_short }}#g" dev/deployment.yaml
+          sed -i "s#${{ secrets.ACR_REPO_NAME }}.*#${{ secrets.CONTAINER_REGISTRY_LOGIN_SERVER  }}/nginx:${{ needs.build-image.outputs.commit_sha_short }}#g" dev/deployment.yaml
           git add -A
           git commit -am "Update image for - ${{ needs.build-image.outputs.commit_sha_short }}"
           git push origin main
-      - run: echo ${{ github }}
-      # - run: git push origin main
-      # git remote add github ${{ env.infraRepo }}
