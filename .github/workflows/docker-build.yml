@@ -54,7 +54,7 @@ jobs:
           git config --global user.email "rollsonipo@gmail.com"
           git config --global user.name "Rollson"
           echo ${{ needs.build-image.outputs.commit_sha_short }}
-          sed -i "s#${{ env.ACR }}.*#{{ env.ACR }}.azurecr.io/nginx:${{ steps.commit_sha.outputs.sha_short }}#g" dev/deployment.yaml
+          sed -i "s#${{ env.ACR }}.*#${{ env.ACR }}.azurecr.io/nginx:${{ needs.build-image.outputs.commit_sha_short }}#g" dev/deployment.yaml
           git add -A
           git commit -am "Update image for - ${{ needs.build-image.outputs.commit_sha_short }}"
           git push origin main
